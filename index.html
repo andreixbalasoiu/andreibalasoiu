@@ -196,7 +196,7 @@
                 {
                     title: 'Modal name #1',
                     short_desc: 'Pricing modal made simple',
-                    long_desc: 'Lorem ipsum dolor sit amet consectetur. Tortor sed bibendum ac vulputate sed donec sit erat diam. Nunc non tristique tellus non non. Non pellentesque sit duis tincidunt posuere quis duis.',
+                    long_desc: 'Fun with pricing modals. The goal was to make it simple, clean and easy to see the pricing model.',
                     images: {
                         left: 'assets/projects/1/left.svg',
                         right: 'assets/projects/1/right.svg',
@@ -207,7 +207,7 @@
                 {
                     title: '4th Corner',
                     short_desc: 'Landing page for a studio that does multimedia',
-                    long_desc: 'Lorem ipsum dolor sit amet consectetur. Tortor sed bibendum ac vulputate sed donec sit erat diam. Nunc non tristique tellus non non. Non pellentesque sit duis tincidunt posuere quis duis.',
+                    long_desc: 'A simple website for the 4th Corner Studio',
                     images: {
                         left: 'assets/projects/2/left.svg',
                         right: 'assets/projects/2/right.svg',
@@ -243,10 +243,9 @@
 
                 if (sliderEnabled || sliderGrabbed) {
                     let currentSliderState = document.getElementById('slider');
-                    let viewportWidth = window.innerWidth;
-                    let distanceFromEnteringView = currentSliderState.lastElementChild.x - viewportWidth;
+                    let distanceFromEnteringView = sliderElement.lastElementChild.getBoundingClientRect().right - window.innerWidth;
 
-                    if (distanceFromEnteringView < 50) {
+                    if (distanceFromEnteringView < currentSliderState.lastElementChild.width / 2) {
                         currentSliderState.appendChild(currentSliderState.children[indexToClone].cloneNode(true));
                         indexToClone++;
 
