@@ -34,7 +34,6 @@
 }
 
 #slider {
-  max-height: 532px;
   cursor: grab;
   user-select: none;
   -webkit-user-select: none; /* Safari */
