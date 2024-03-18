@@ -38,6 +38,9 @@
   user-select: none;
   -webkit-user-select: none; /* Safari */
   overflow: hidden;
+  img {
+    max-height: 530px;
+  }
 }
 
 #slider.active {
