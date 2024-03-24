@@ -3,18 +3,19 @@
 
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport"
-            content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Freelancer UI/UX Designer with a passion for SaaS. I help founders
+                    get from 0 to 1. Open to work. Get in touch @ hello@andreibalasoiu.com">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="icon" href="/assets/logo.svg">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="preload">
         <title>Andrei Balasoiu</title>
         <link href="style/default.css" rel="stylesheet">
         <link href="style/style.css" rel="stylesheet">
         <link href="style/utilities.css" rel="stylesheet">
     </head>
-
     <body>
         <section class="pt-40 pb-40 w-100p d-flex align-center" style="height: 130px;">
             <div class="max-width-1440 d-flex align-vertical-center space-between content-margin w-100p">
@@ -85,6 +86,9 @@
             </div>
         </section>
         <section id="slider" class="slider mb-68 d-flex overflow" style="gap: 16px">
+            <img src="assets/slider/project-1.webp" alt="project1">
+            <img src="assets/slider/project-2.webp" alt="project2">
+            <img src="assets/slider/project-3.webp" alt="project3">
         </section>
         <section id="contact-buttons-initial" class="w-100p d-flex align-vertical-center align-center"
             style="margin-bottom: 104px">
@@ -173,261 +177,6 @@
                 </div>
             </section>
         </footer>
-        <script>
-            let contactButtonsInitial = document.getElementById('contact-buttons-initial');
-            let contactButtonsFooterFixed = document.getElementById('contact-buttons-initial-footer-fixed');
-            let projectsContainer = document.getElementById('projects-container');
-            let bottomSocials = document.getElementById('bottom-socials');
-            let sliderElement = document.getElementById('slider')
-
-            const slides = [
-                'project-1.webp',
-                'project-2.webp',
-                'project-3.webp',
-                'project-4.webp',
-                'project-5.webp',
-                'project-6.webp',
-            ];
-
-            const LAYOUT_TWO_IMAGES_FIRST = 'LAYOUT_TWO_IMAGES_FIRST'
-            const LAYOUT_WIDE_IMAGE_FIRST = 'LAYOUT_WIDE_IMAGE_FIRST'
-
-            const projects = [
-                {
-                    title: 'Pricing model',
-                    short_desc: 'Pricing modal made simple',
-                    long_desc: 'Fun with pricing modals. The goal was to make it simple, clean and easy to see the pricing model.',
-                    images: {
-                        left: 'assets/projects/1/left.webp',
-                        right: 'assets/projects/1/right.webp',
-                        wide: 'assets/projects/1/wide.webp',
-                        layout: LAYOUT_TWO_IMAGES_FIRST
-                    }
-                },
-                {
-                    title: '4th Corner',
-                    short_desc: 'Landing page for a studio that does multimedia',
-                    long_desc: 'A simple website for the 4th Corner Studio',
-                    images: {
-                        left: 'assets/projects/2/left.svg',
-                        right: 'assets/projects/2/right.svg',
-                        wide: 'assets/projects/2/wide.svg',
-                        layout: LAYOUT_WIDE_IMAGE_FIRST
-                    },
-                }
-            ];
-
-            let indexToClone = 0;
-            let sliderGrabbed = false;
-            let sliderEnabled = true;
-            let startX;
-            let scrollLeft;
-
-            function sleep(time) {
-                return new Promise((resolve) => setTimeout(resolve, time));
-            }
-
-            function moveSlider(element) {
-                if (sliderEnabled) {
-                    element.scrollLeft += 1;
-                }
-                sleep(10).then(() => {
-                    moveSlider(element)
-                });
-            }
-
-            function loopImagesIfNeeded() {
-                if (slides.length < 2) {
-                    return;
-                }
-
-                if (sliderEnabled || sliderGrabbed) {
-                    let currentSliderState = document.getElementById('slider');
-                    let distanceFromEnteringView = sliderElement.lastElementChild.getBoundingClientRect().right - window.innerWidth;
-
-                    if (distanceFromEnteringView < currentSliderState.lastElementChild.width / 2) {
-                        currentSliderState.appendChild(currentSliderState.children[indexToClone].cloneNode(true));
-                        indexToClone++;
-
-                        if (indexToClone >= slides.length) {
-                            indexToClone = 0;
-                        }
-                    }
-                }
-
-                sleep(sliderGrabbed ? 10 : 250).then(() => loopImagesIfNeeded())
-            }
-
-            function sliderWasGrabbed(e, mobile = false) {
-                sliderGrabbed = true;
-                sliderEnabled = false;
-                sliderElement.classList.add('active');
-                let pageX = mobile ? e.changedTouches[0].pageX : e.pageX;
-                startX = pageX - sliderElement.offsetLeft;
-                scrollLeft = sliderElement.scrollLeft;
-            }
-
-            function sliderLetGo() {
-                sliderGrabbed = false;
-                sliderEnabled = true;
-                sliderElement.classList.remove('active');
-            }
-
-            function moveSliderManually(e, mobile = false) {
-                if (!sliderGrabbed) return;
-                e.preventDefault();
-                let pageX = mobile ? e.changedTouches[0].pageX : e.pageX;
-                const x = pageX - sliderElement.offsetLeft;
-                const walk = (x - startX) * 2;
-                sliderElement.scrollLeft = scrollLeft - walk;
-            }
-
-            function loadProjects() {
-                let lastIndex = projects.length - 1;
-                projects.forEach((project, index) => {
-                    let wrapper = document.createElement('div');
-                    if (index !== lastIndex) {
-                        wrapper.style.marginBottom = '104px';
-                    }
-
-                    let imagesLeftRightContainer = document.createElement('div');
-                    let imageWideContainer = document.createElement('div');
-
-                    let projectInformation = document.createElement('div');
-                    projectInformation.classList.add('d-flex', 'align-vertical-center', 'align-center', 'flex-column', 'mb-24');
-
-                    let title = document.createElement('span');
-                    title.classList.add('mb-24', 'fs-16', 'text-grey');
-                    title.innerHTML = project.title;
-
-                    let shortDesc = document.createElement('h2');
-                    shortDesc.classList.add('mb-24', 'text-center');
-                    shortDesc.innerHTML = project.short_desc;
-
-                    let longDesc = document.createElement('p');
-                    longDesc.classList.add('text-center', 'w-90p')
-                    longDesc.innerHTML = project.long_desc;
-
-                    let imagesContainer = document.createElement('div');
-                    imagesContainer.classList.add('d-flex', 'align-vertical-center', 'align-center', 'flex-column');
-                    imagesContainer.style.gap = '12px';
-
-                    if (project.images.left !== '' && project.images.right !== '') {
-                        imagesLeftRightContainer.classList.add('d-flex', 'align-center', 'align-vertical-center', 'w-100p');
-                        imagesLeftRightContainer.style.gap = '12px';
-
-                        let imageLeft = createSmallImageElement(project.images.left);
-                        let imageRight = createSmallImageElement(project.images.right);
-
-                        imagesLeftRightContainer.appendChild(imageLeft);
-                        imagesLeftRightContainer.appendChild(imageRight);
-                    }
-
-                    if (project.images.wide !== '') {
-                        imageWideContainer.classList.add('w-100p');
-
-                        let imageWide = document.createElement('img');
-                        imageWide.src = project.images.wide;
-                        imageWide.width = 1440;
-
-                        imageWideContainer.appendChild(imageWide);
-                    }
-
-                    if (project.images.layout === LAYOUT_TWO_IMAGES_FIRST) {
-                        imagesContainer.appendChild(imagesLeftRightContainer);
-                        imagesContainer.appendChild(imageWideContainer);
-                    }
-                    else if (project.images.layout === LAYOUT_WIDE_IMAGE_FIRST) {
-                        imagesContainer.appendChild(imageWideContainer);
-                        imagesContainer.appendChild(imagesLeftRightContainer);
-                    }
-
-
-                    projectInformation.appendChild(title);
-                    projectInformation.appendChild(shortDesc);
-                    projectInformation.appendChild(longDesc);
-
-                    wrapper.appendChild(projectInformation);
-                    wrapper.appendChild(imagesContainer);
-
-                    projectsContainer.appendChild(wrapper);
-                })
-            }
-
-            function createSmallImageElement(src) {
-                let image = document.createElement('img');
-                image.src = src;
-                image.width = 720;
-                image.style.maxWidth = 'calc(50% - 6px)'
-
-                return image;
-            }
-
-            document.addEventListener('DOMContentLoaded', function () {
-                loadProjects();
-
-                // Firefox disable drag images on clickable scroll
-                document.addEventListener('dragstart', function (e) {
-                    e.preventDefault();
-                });
-
-                slides.forEach(slide => {
-                    let img = document.createElement('img')
-                    img.src = `assets/slider/${slide}`
-
-                    sliderElement.appendChild(img)
-                })
-
-                moveSlider(sliderElement);
-                sleep(500).then(() => loopImagesIfNeeded());
-
-                sliderElement.addEventListener('mousedown', (e) => {
-                    sliderWasGrabbed(e);
-                });
-
-                sliderElement.addEventListener('mouseleave', () => {
-                    sliderLetGo();
-                });
-                sliderElement.addEventListener('mouseup', () => {
-                    sliderLetGo();
-                });
-
-                sliderElement.addEventListener('mousemove', (e) => {
-                    moveSliderManually(e)
-                });
-
-                sliderElement.addEventListener('touchstart', (e) => {
-                    sliderWasGrabbed(e, true);
-                });
-
-                sliderElement.addEventListener('touchend', () => {
-                    sliderLetGo();
-                });
-
-                sliderElement.addEventListener('touchmove', (e) => {
-                    moveSliderManually(e, true)
-                });
-            });
-
-            document.addEventListener('scroll', () => {
-                if ((bottomSocials.getBoundingClientRect().top - window.innerHeight) < 0) {
-                    contactButtonsFooterFixed.style.position = 'initial'
-                }
-                else if ((bottomSocials.getBoundingClientRect().top - window.innerHeight) > 160 &&
-                    contactButtonsFooterFixed.style.position === 'initial') {
-                    contactButtonsFooterFixed.style.position = 'fixed'
-                }
-
-                if (contactButtonsInitial.getBoundingClientRect().bottom < 0) {
-                    contactButtonsFooterFixed.style.opacity = "1";
-                }
-                else {
-                    contactButtonsFooterFixed.style.opacity = "0";
-                }
-
-                sliderEnabled = sliderElement.getBoundingClientRect().bottom > 0
-            });
-        </script>
+    <script src="script.js" type="text/javascript" defer></script>
     </body>
-
 </html>
